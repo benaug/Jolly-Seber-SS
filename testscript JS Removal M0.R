@@ -50,7 +50,7 @@ N.init <- M.init + U.init
 U.prime.init <- U.init[-G] - data$u[-G]
 B.init <- U.init[-1] - U.prime.init
 M.plus.init <- M.init[-G] - data$m[-G] + data$R
-S.init <- M.plus.init-data$T - 1
+S.init <- M.plus.init-data$T
 
 #tests
 all(M.init[2:G] == (M.init[1:(G-1)] - data$m[1:(G-1)] + data$R[1:(G-1)] - D.init[1:(G-1)]))
@@ -109,7 +109,7 @@ Cmodel$calculate()
 # Cmodel$logProb_U.prime
 # Cmodel$logProb_S
 # Cmodel$logProb_dummy.data.T
-# Cmodel$logProb_dummy.data.m  #if too many captures, can get underflow here. need to fix this.
+# Cmodel$logProb_m  #if too many captures, can get underflow here. need to fix this.
 # Cmodel$logProb_u
 
 # Run the model.

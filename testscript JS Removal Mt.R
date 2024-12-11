@@ -50,7 +50,7 @@ N.init <- M.init + U.init
 U.prime.init <- U.init[-G] - data$u[-G]
 B.init <- U.init[-1] - U.prime.init
 M.plus.init <- M.init[-G] - data$m[-G] + data$R
-S.init <- M.plus.init-data$T - 1
+S.init <- M.plus.init-data$T 
 
 #tests
 all(M.init[2:G] == (M.init[1:(G-1)] - data$m[1:(G-1)] + data$R[1:(G-1)] - D.init[1:(G-1)]))
@@ -69,7 +69,19 @@ all(M.init[-1] == M.init[-G] - data$m[-G] + data$R - D.init)
 #might as well always use them
 p.init <- (data$m+data$u)/(M.init+U.init)
 phi.init <- (S.init+data$T+U.prime.init)/N.init[-G]
+phi.init[phi.init==1] <- 0.99 #adjust if initialized to 1
+
 gamma.init <- B.init/N.init[-G]
+
+#if data are sparse, may have zeros or ones in these inits which can yield nonfinite starting logProb, set to mean
+idx <- which(p.init==0|p.init==1)
+if(length(idx)>0){
+  p.init[idx] <- mean(p.init[-idx])
+}
+idx <- which(phi.init==0|phi.init==1)
+if(length(idx)>0){
+  phi.init[idx] <- mean(phi.init[-idx])
+}
 
 
 constants <- list(G=G) 
@@ -101,7 +113,7 @@ Cmodel$calculate()
 # Cmodel$logProb_U.prime
 # Cmodel$logProb_S
 # Cmodel$logProb_dummy.data.T
-# Cmodel$logProb_dummy.data.m  #if too many captures, can get underflow here. need to fix this.
+# Cmodel$logProb_m  #if too many captures, can get underflow here. need to fix this.
 # Cmodel$logProb_u
 
 # Run the model.
