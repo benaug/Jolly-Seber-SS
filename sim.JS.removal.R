@@ -180,7 +180,7 @@ sim.JS.removal <- function(lambda.g1=NA,gamma=NA,phi=NA,p=NA,
   #recruitment is right
   mean(B/N[-G])
   
-  
+  # y.removed <- y.U.removed[rowSums(y)>0,] + y.M.removed[rowSums(y)>0,]
   
 
   #store true data for model building/debugging
@@ -189,6 +189,6 @@ sim.JS.removal <- function(lambda.g1=NA,gamma=NA,phi=NA,p=NA,
                 U.removed=U.removed,M.removed=M.removed)
   
 
-  return(list(u=u,m=m,R=R,T=T,truth=truth))
+  return(list(u=u,m=m,R=R,T=T,y.obs=y.obs,N.removed=U.removed+M.removed,truth=truth))
 }
 
